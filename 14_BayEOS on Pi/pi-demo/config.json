@@ -1,0 +1,12 @@
+{
+  "log_level": "INFO",
+  "sleep_time": 1,
+  "path": "/tmp/bayeos-device",
+  "max_time": 5,
+  "name": "Pi-H7",
+  "gateway": {
+    "url": "https://bayeos.bayceer.uni-bayreuth.de/gateway/frame/saveFlat",
+    "user": "import@Workshop",
+    "password": "CHANGE ME!"
+  }
+}
