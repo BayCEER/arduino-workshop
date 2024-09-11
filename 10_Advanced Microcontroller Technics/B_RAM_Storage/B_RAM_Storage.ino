@@ -7,7 +7,7 @@ BayDebug client = BayDebug(Serial);
 
 // Create a RAM-Buffer 
 // Each Frame is composed of 12 Bytes: 
-// 4 (Timestamp) + 1 (Length) + 3 (FrameHeader) + 4 (je Channel)
+// 4 (Timestamp) + 1 (Length) + 3 (FrameHeader) + 4 x Number Channes (here one)
 
 //TODO: Reduce the size
 #define BUFFER_SIZE 50

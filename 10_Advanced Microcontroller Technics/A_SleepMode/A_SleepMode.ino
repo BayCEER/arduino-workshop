@@ -15,7 +15,6 @@ volatile unsigned long seconds = 0;
 
 //The very important 32.768kHz interrupt handler
 ISR(TIMER2_OVF_vect){
-  //seconds++;
   seconds += 1; //Adjust to your timer2 time!
 }
 

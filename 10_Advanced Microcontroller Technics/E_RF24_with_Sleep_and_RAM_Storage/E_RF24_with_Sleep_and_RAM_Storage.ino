@@ -3,14 +3,14 @@
 #include <Sleep.h>
 #include <RTClib.h>
 
-
-#define RF24ADDRESS 0x45c431ae12LL
-//#define RF24ADDRESS 0x45c431ae24LL
-//#define RF24ADDRESS 0x45c431ae48LL
-//#define RF24ADDRESS 0x45c431ae96LL
-//#define RF24ADDRESS 0x45c431aeabLL
-//#define RF24ADDRESS 0x45c431aebfLL
-#define RF24CHANNEL 0x62
+#define RF24CHANNEL 0x2b /* A */
+// #define RF24CHANNEL 0x2b /* B */
+#define RF24ADDRESS 0xf36c437912 /* A0 or B0 */
+// #define RF24ADDRESS 0xf36c437924 /* A1 or B1 */
+// #define RF24ADDRESS 0xf36c437948 /* A2 or B2 */
+// #define RF24ADDRESS 0xf36c437996 /* A3 or B3 */
+// #define RF24ADDRESS 0xf36c4379ab /* A4 or B4 */
+// #define RF24ADDRESS 0xf36c4379bf /* A5 or B5 */
 
 #define BUFFER_SIZE 1000
 uint8_t buffer[BUFFER_SIZE];

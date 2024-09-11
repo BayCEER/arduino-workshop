@@ -9,11 +9,11 @@
 #include <BayEOSBufferSPIFlash.h>
 #include <Sleep.h>
 #include <RTClib.h>
-#include <BayTCPSim900.h>
+#include <BaySIM800.h>
+BaySIM800 client = BaySIM800(Serial);
+#define SIM800_CONFIG "http://132.180.112.128/gateway/frame/saveFlat|import@Workshop|ChangeME|MyGPRS-Board|iot.1nce.net||||"
 
 #define GPRS_POWER_PIN 7
-
-BayGPRS client = BayGPRS(Serial);
 
 SPIFlash flash(8); //Standard SPIFlash Instanz
 BayEOSBufferSPIFlash myBuffer; //BayEOS Buffer
@@ -40,8 +40,8 @@ void setup()
   pinMode(GPRS_POWER_PIN, OUTPUT);
   digitalWrite(GPRS_POWER_PIN, HIGH);
   //CHANGE CONFIG!!
-  client.readConfigFromStringPGM(PSTR("132.180.112.55|80|gateway/frame/saveFlat|import|import|WS2017-G1|pinternet.interkom.de|||4688|"));
-  client.begin(9600);
+  client.readConfigFromStringPGM(PSTR(SIM800_CONFIG));
+  client.begin(38400);
   client.sendMessage("GPRS started");
   digitalWrite(GPRS_POWER_PIN, LOW);
   gprs_counter=GPRS_SEND_COUNT - 1;
@@ -63,12 +63,11 @@ void loop()
     client.writeToBuffer();
   }
 
-  if ((myRTC._seconds % 16) == 2) {
+  if ((myRTC._seconds % 32) == 2) {
     gprs_counter++;
     if (gprs_counter > GPRS_SEND_COUNT) {
       if (! gprs_status) {
         digitalWrite(GPRS_POWER_PIN, HIGH);
-        //        client.softSwitch();
         client.begin(38400);
         gprs_status = 1;
       }

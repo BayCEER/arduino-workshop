@@ -1,3 +1,6 @@
+// Example with three interrupts
+
+
 #include <Sleep.h>
 
 void schalter(void){
@@ -5,7 +8,8 @@ void schalter(void){
 }
 
 ISR(TIMER2_OVF_vect){
-  digitalWrite(5, ! digitalRead(5));
+  digitalWrite(LED_BUILTIN, ! digitalRead(LED_BUILTIN));
+  Serial.println("TIMER2");
 }
 
 ISR(WDT_vect) {
@@ -15,12 +19,12 @@ ISR(WDT_vect) {
 const byte interruptPin = 2;
 
 void setup() {
-  pinMode(5,OUTPUT);
-  pinMode(interruptPin, INPUT_PULLUP);
+  pinMode(LED_BUILTIN,OUTPUT);
   Serial.begin(9600);
   Serial.println("Starting...");
-  Sleep.setupTimer2(); //init timer2 to 1 sec
+  Sleep.setupTimer2(3); //init timer2 to 0.25 sec
   Sleep.setupWatchdog(); //init watchdog timer to about 1 sec
+  pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin), schalter, FALLING);
 }
 

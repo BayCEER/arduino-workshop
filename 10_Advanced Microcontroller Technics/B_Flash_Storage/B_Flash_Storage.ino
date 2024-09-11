@@ -21,6 +21,7 @@ int count=0;
 
 void loop(void) {
   if ((count % 16) == 0){
+
     while(myBuffer.available())
       client.sendFromBuffer(); //Read data from buffer and try to send
   }
@@ -34,8 +35,4 @@ void loop(void) {
   delay(1000);
   count++;
 }
-/* 
-  Reference
-  https://www.arduino.cc/reference/en/language/functions/time/millis/
-*/
 
