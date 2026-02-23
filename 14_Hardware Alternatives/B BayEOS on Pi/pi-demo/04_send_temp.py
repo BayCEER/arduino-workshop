@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 from w1thermsensor import W1ThermSensor, Sensor
 from bayeosgatewayclient import BayEOSWriter, BayEOSSender
 from time import sleep

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 import sys, signal
 from w1thermsensor import W1ThermSensor, Sensor
 from bayeosgatewayclient import BayEOSWriter, BayEOSSender
@@ -8,17 +6,17 @@ from bayeosdevice.device import DeviceController
 from bayeosdevice.item import ItemDict
 import logging
 import json
-import RPi.GPIO as GPIO
+import lgpio
 
 # Init LED 
-LED_RED = 29
-LED_GREEN = 35
+LED = 5
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
+handle = lgpio.gpiochip_open(0)
+if handle < 0:
+   print("GPIO Error")
+   sys.exit(-1)
 
-GPIO.setup(LED_RED, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(LED_GREEN, GPIO.OUT, initial=GPIO.LOW)
+lgpio.gpio_claim_output(handle, LED,0)
 
 with open("./config.json") as f:
         conf = json.load(f)
@@ -26,6 +24,7 @@ with open("./config.json") as f:
 logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s',level=conf["log_level"]) 
 
 def sigterm_handler(_signo, _stack_frame):
+    lgpio.gpio_free(handle, LED)    
     sys.exit(0)    
 
 signal.signal(signal.SIGTERM, sigterm_handler) 
@@ -42,8 +41,8 @@ sensor = W1ThermSensor(Sensor.DS18B20,"0214646739ff")
 
 
 values = ItemDict({"Temperature":None})
-units = {"Temperature":'°C',"\w+time$":'secs'}
-settings = ItemDict({"sleep_time":conf["sleep_time"], "run": True, "led_red": False, "led_green":False})
+units = {r'Temperature':'°C',r'\w+time$':'secs'}
+settings = ItemDict({"sleep_time":conf["sleep_time"], "run": True, "led": False})
 
 controller = DeviceController(values,settings,units)
 controller.start()
@@ -55,9 +54,7 @@ while True:
         writer.save(values,0x61)
 
         # Toggle actuators
-        GPIO.output(LED_RED,settings['led_red'])
-        GPIO.output(LED_GREEN,settings['led_green'])
-
+        lgpio.gpio_write(handle, LED,settings['led'])                    
 
         sleep(settings["sleep_time"])            
     else:

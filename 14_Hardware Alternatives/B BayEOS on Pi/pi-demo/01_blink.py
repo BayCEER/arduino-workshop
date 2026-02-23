@@ -1,18 +1,27 @@
-import RPi.GPIO as GPIO
+import lgpio
+import sys
 from time import sleep
 
-PIN = 29
+LED = 5 # RED: GPIO5, GREEN: GPIO19
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(PIN, GPIO.OUT, initial=GPIO.LOW)
+handle = lgpio.gpiochip_open(0)
+if handle < 0:
+   print("GPIO Error")
+   sys.exit(-1)
+   
 
-# Flashes red led four times 
+lgpio.gpio_claim_output(handle, LED,0)
+
+# Flashes led four times 
 for i in range(0,4):    
-    GPIO.output(PIN, GPIO.HIGH) # Turn on
-    sleep(1)                    # Sleep for 1 second
-    GPIO.output(PIN, GPIO.LOW)  # Turn off
-    sleep(1)                    # Sleep for 1 second
+    lgpio.gpio_write(handle, LED, 1)    
+    sleep(1) # Sleep for 1 second
+    lgpio.gpio_write(handle, LED, 0)    
+    sleep(1) # Sleep for 1 second
+
+lgpio.gpio_free(handle, LED)
+sys.exit(0)
+    
 
 
 

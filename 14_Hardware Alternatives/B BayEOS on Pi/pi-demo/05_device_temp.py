@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 import sys, signal
 from w1thermsensor import W1ThermSensor, Sensor
 from bayeosgatewayclient import BayEOSWriter, BayEOSSender
@@ -32,7 +30,7 @@ sensor = W1ThermSensor(Sensor.DS18B20,"0214646739ff")
 
 
 values = ItemDict({"Temperature":None})
-units = {"Temperature":'°C',"\w+time$":'secs'}
+units = {r'Temperature':'°C',r'\w+time$':'secs'}
 settings = ItemDict({"sleep_time":conf["sleep_time"], "run": True})
 
 controller = DeviceController(values,settings,units)
@@ -48,5 +46,5 @@ while True:
 
 
 # TODO
-# Add a new control to switch the LED on/off
+# Add a new control to switch the RED LED (GPIO5) on and off
 
